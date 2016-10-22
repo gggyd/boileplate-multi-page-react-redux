@@ -1,7 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const TARGET = process.env.npm_lifecycle_event;
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
@@ -10,7 +14,7 @@ const PATHS = {
 
 const chunks = ['index', 'about'];
 
-module.exports = {
+const common = {
   entry: {
     index: PATHS.app + '/Index',
     about: PATHS.app + '/About'
@@ -19,17 +23,6 @@ module.exports = {
     path: PATHS.public,
     filename: '[name].js',
     chunkFilename: '[id].chunk.js'
-  },
-  devtool: 'eval-source-map',
-  devServer: {
-    contentBase: PATHS.public,
-    historyApiFallback: true,
-    hot: true,
-    inline: true,
-    progress: true,
-    stats: 'errors-only',
-    host: process.env.HOST,
-    port: process.env.PORT || 5000
   },
   resolves: {
     extensions: ['.js']
@@ -85,7 +78,43 @@ module.exports = {
         collapseWhitespace: false
       }
     }),
-    new ExtractTextPlugin('css/[name].css'),
-    new webpack.HotModuleReplacementPlugin()
+    new ExtractTextPlugin('css/[name].css')
   ]
+}
+
+if (TARGET === 'start' || !TARGET) {
+  module.exports = merge(common, {
+    devtool: 'eval-source-map',
+    devServer: {
+      contentBase: PATHS.public,
+      historyApiFallback: true,
+      hot: true,
+      inline: true,
+      progress: true,
+      stats: 'errors-only',
+      host: process.env.HOST,
+      port: process.env.PORT || 5000
+    },
+    plugins: [
+      new webpack.HotModuleReplacementPlugin()
+    ]
+  });
+}
+
+if (TARGET === 'build') {
+  module.exports = merge(common, {
+    plugins: [
+      new CleanPlugin(['public'], {
+        // verbose: false
+      }),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"production"'
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      })
+    ]
+  });
 }

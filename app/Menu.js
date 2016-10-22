@@ -5,7 +5,7 @@ class Menu extends Component {
   render() {
     return (
       <div className="menu">
-        <a href="index.html">Index</a>
+        <a href="/">Index</a>
         <a href="about.html">About</a>
       </div>
     )
