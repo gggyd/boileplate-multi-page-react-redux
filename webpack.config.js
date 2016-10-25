@@ -12,12 +12,13 @@ const PATHS = {
   public: path.join(__dirname, 'public')
 }
 
-const chunks = ['index', 'about'];
+const chunks = ['index', 'about', 'bank'];
 
 const common = {
   entry: {
     index: PATHS.app + '/Index',
-    about: PATHS.app + '/About'
+    about: PATHS.app + '/About',
+    bank: PATHS.app + '/Bank'
   },
   output: {
     path: PATHS.public,
@@ -73,6 +74,18 @@ const common = {
       appMountId: 'root',
       hash: true,
       chunks: ['vendors', 'about'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: false
+      }
+    }),
+    new HtmlWebpackPlugin({
+      inject: false,
+      template: require('html-webpack-template'),
+      filename: 'bank.html',
+      appMountId: 'root',
+      hash: true,
+      chunks: ['vendors', 'bank'],
       minify: {
         removeComments: true,
         collapseWhitespace: false
