@@ -55,45 +55,27 @@ const common = {
       chunks: chunks,
       minChunks: chunks.length
     }),
-    new HtmlWebpackPlugin({
-      inject: false,
-      template: require('html-webpack-template'),
-      filename: 'index.html',
-      appMountId: 'root',
-      hash: true,
-      chunks: ['vendors', 'index'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: false
-      }
-    }),
-    new HtmlWebpackPlugin({
-      inject: false,
-      template: require('html-webpack-template'),
-      filename: 'about.html',
-      appMountId: 'root',
-      hash: true,
-      chunks: ['vendors', 'about'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: false
-      }
-    }),
-    new HtmlWebpackPlugin({
-      inject: false,
-      template: require('html-webpack-template'),
-      filename: 'bank.html',
-      appMountId: 'root',
-      hash: true,
-      chunks: ['vendors', 'bank'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: false
-      }
-    }),
     new ExtractTextPlugin('css/[name].css')
   ]
 }
+
+chunks.forEach((chunk, index) => {
+  let htmlWebpackPlugin = new HtmlWebpackPlugin({
+    inject: false,
+      template: require('html-webpack-template'),
+      filename: chunk + '.html',
+      appMountId: 'root',
+      hash: true,
+      chunks: ['vendors', ...[chunk]],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: false
+      }
+  })
+
+  common.plugins.push(htmlWebpackPlugin);
+})
+
 
 if (TARGET === 'start' || !TARGET) {
   module.exports = merge(common, {
