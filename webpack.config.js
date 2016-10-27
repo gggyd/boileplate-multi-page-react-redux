@@ -12,13 +12,14 @@ const PATHS = {
   public: path.join(__dirname, 'public')
 }
 
-const chunks = ['index', 'about', 'bank'];
+const chunks = ['index', 'about', 'bank', 'paysdk'];
 
 const common = {
   entry: {
     index: PATHS.app + '/Index',
     about: PATHS.app + '/About',
-    bank: PATHS.app + '/Bank'
+    bank: PATHS.app + '/Bank',
+    paysdk: PATHS.app + '/PaySDK'
   },
   output: {
     path: PATHS.public,
