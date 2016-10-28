@@ -1,4 +1,10 @@
-import { REQUEST_QUERY_PAY_OPTION, RECEIVE_QUERY_PAY_OPTION } from '../constants';
+import { 
+  REQUEST_QUERY_PAY_OPTION, 
+  RECEIVE_QUERY_PAY_OPTION,
+  SELECTED_APP,
+  SELECTED_AMOUNT,
+  SHOW_SELECTED_APP
+ } from '../constants';
 import PayOptionAPI from '../api/payOptionAPI';
 
 let PaySDKActionCreators = {
@@ -12,6 +18,17 @@ let PaySDKActionCreators = {
     };
   },
   
+  selectedApp(game) {
+    return {type: SELECTED_APP, info: game}
+  },
+
+  selectedAmount(amount) {
+    return {type: SELECTED_AMOUNT, info: {amount}}
+  },
+
+  showSelectedApp() {
+    return {type: SHOW_SELECTED_APP}
+  }
 };
 
 export default PaySDKActionCreators;

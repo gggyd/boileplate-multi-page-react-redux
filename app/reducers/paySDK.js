@@ -1,5 +1,12 @@
-import { REQUEST_QUERY_PAY_OPTION, RECEIVE_QUERY_PAY_OPTION } from '../constants';
+import { 
+  REQUEST_QUERY_PAY_OPTION, 
+  RECEIVE_QUERY_PAY_OPTION,
+  SELECTED_APP,
+  SELECTED_AMOUNT,
+  SHOW_SELECTED_APP
+} from '../constants';
 import { combineReducers } from 'redux';
+import _ from 'lodash';
 
 const initialState = {
   info: {
@@ -17,6 +24,10 @@ const initialState = {
     orderNo: '',
     transDate: '',
   },
+  toggle: {
+    app: false,
+    zone: false
+  },
   payOption: {}
 }
 
@@ -31,14 +42,27 @@ let PayOption = (state = initialState.payOption, action) => {
 
 let Info = (state = initialState.info, action) => {
   switch (action.type) {
+    case SELECTED_APP: 
+    case SELECTED_AMOUNT:
+      return _.assign({}, state, action.info)
     default: 
+      return state;
+  }
+}
+
+let Toggle = (state = initialState.toggle, action) => {
+  switch (action.type) {
+    case SHOW_SELECTED_APP:
+      return _.assign({}, state, {app: !state.app})
+    default:
       return state;
   }
 }
 
 const paySDK = combineReducers({
   PayOption,
-  Info
+  Info,
+  Toggle
 });
 
 export default paySDK;

@@ -51,6 +51,9 @@ const common = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery'
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendors',
       chunks: chunks,
