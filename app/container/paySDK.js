@@ -45,7 +45,9 @@ class PayOption extends Component {
     
     $(target).css('position', 'absolute').css('left', offset.left).css('top', offset.top + 55);
 
-    let _outsideClickProxy = $.proxy(function(e) { this.dropdownOutsideClick(e); }, this);
+    let _outsideClickProxy = $.proxy((e) => { 
+      this.dropdownOutsideClick(e); 
+    }, this);
 
     $(document)
       .on('mousedown.dropdown', _outsideClickProxy)
@@ -63,11 +65,14 @@ class PayOption extends Component {
       paySDK, 
       onSelectedApp, 
       onSelectedAmount,
-      onToggleApp 
+      onToggleApp,
+      onSelectedPay
     } = this.props; 
 
     let amountListData = paySDK.PayOption && paySDK.PayOption.amountList ? paySDK.PayOption.amountList : [];
     let gameListData = paySDK.PayOption && paySDK.PayOption.gameList ? paySDK.PayOption.gameList : [];
+    let payListData = paySDK && paySDK.PayList ? paySDK.PayList : [];
+    console.log(payListData);
 
     let amountList = amountListData.map((amount, index) => (
       <span key={ 'amount_' + index } onClick={onSelectedAmount.bind(this, amount)}>
@@ -106,6 +111,20 @@ class PayOption extends Component {
         <div>
           {amountList}
         </div>
+        <br />
+        <div>
+          {
+            payListData.map(pay => (
+              <div key={pay.pay} onClick={onSelectedPay.bind(this, pay)}>
+                <span>{pay.payDesc}</span>
+                {
+                  pay.pay === paySDK.Info.pay &&
+                  <em>*</em>
+                }
+              </div>
+            ))
+          }
+        </div>
       </div>
     )
   }
@@ -116,7 +135,8 @@ PayOption.propTypes = {
   fetchOption: PropTypes.func,
   onSelectedApp: PropTypes.func,
   onSelectedAmount: PropTypes.func,
-  onToggleApp: PropTypes.func
+  onToggleApp: PropTypes.func,
+  onSelectedPay: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
@@ -127,7 +147,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchOption: () => dispatch(PaySDKActionCreators.fetchPayOption()),
   onSelectedApp: (game) => dispatch(PaySDKActionCreators.selectedApp(game)),
   onSelectedAmount: (amount) => dispatch(PaySDKActionCreators.selectedAmount(amount)),
-  onToggleApp: () => dispatch(PaySDKActionCreators.showSelectedApp())
+  onToggleApp: () => dispatch(PaySDKActionCreators.showSelectedApp()),
+  onSelectedPay: (pay) => dispatch(PaySDKActionCreators.selectedPay(pay))
 });
 
 const PayOptionContaner = connect(mapStateToProps, mapDispatchToProps)(PayOption);

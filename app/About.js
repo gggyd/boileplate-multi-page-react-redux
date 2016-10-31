@@ -1,20 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import Menu from './Menu';
+import Activity from './container/activity';
+import AppStore from './AppStore';
 
 require('./css/common.less');
 require('./css/about.less');
 
-class About extends Component {
 
-  render() {
-    return (
-      <div className="about">
-        <Menu />
-        <h3>About Page</h3>
-      </div>
-    )
-  }
-}
-
-render(<About />, document.getElementById('root'));
+render(<Provider store={AppStore}>
+        <Activity />
+      </Provider>, document.getElementById('root'));

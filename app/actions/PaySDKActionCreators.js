@@ -3,7 +3,8 @@ import {
   RECEIVE_QUERY_PAY_OPTION,
   SELECTED_APP,
   SELECTED_AMOUNT,
-  SHOW_SELECTED_APP
+  SHOW_SELECTED_APP,
+  SELECTED_PAY
  } from '../constants';
 import PayOptionAPI from '../api/payOptionAPI';
 
@@ -28,6 +29,10 @@ let PaySDKActionCreators = {
 
   showSelectedApp() {
     return {type: SHOW_SELECTED_APP}
+  },
+
+  selectedPay(pay) {
+    return {type: SELECTED_PAY, info: pay}
   }
 };
 

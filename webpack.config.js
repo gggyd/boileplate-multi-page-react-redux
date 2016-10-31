@@ -89,6 +89,12 @@ if (TARGET === 'start' || !TARGET) {
       historyApiFallback: true,
       hot: true,
       inline: true,
+      proxy: {
+        '/api/*': {
+            target: 'http://127.0.0.1:9999',
+            secure: false
+        }
+      },
       progress: true,
       stats: 'errors-only',
       host: process.env.HOST,

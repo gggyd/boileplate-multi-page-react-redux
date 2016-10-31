@@ -3,7 +3,8 @@ import {
   RECEIVE_QUERY_PAY_OPTION,
   SELECTED_APP,
   SELECTED_AMOUNT,
-  SHOW_SELECTED_APP
+  SHOW_SELECTED_APP,
+  SELECTED_PAY
 } from '../constants';
 import { combineReducers } from 'redux';
 import _ from 'lodash';
@@ -28,6 +29,16 @@ const initialState = {
     app: false,
     zone: false
   },
+  payList: [
+    {
+      pay: 'qbao',
+      payDesc: '钱宝支付'
+    },
+    {
+      pay: 'alipay',
+      payDesc: '支付宝'
+    }
+  ],
   payOption: {}
 }
 
@@ -44,6 +55,7 @@ let Info = (state = initialState.info, action) => {
   switch (action.type) {
     case SELECTED_APP: 
     case SELECTED_AMOUNT:
+    case SELECTED_PAY:
       return _.assign({}, state, action.info)
     default: 
       return state;
@@ -59,10 +71,18 @@ let Toggle = (state = initialState.toggle, action) => {
   }
 }
 
+let PayList = (state = initialState.payList, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}
+
 const paySDK = combineReducers({
   PayOption,
   Info,
-  Toggle
+  Toggle,
+  PayList
 });
 
 export default paySDK;
